@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('medicamentos', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo')->unique(); // SKU
+            $table->string('codigo')->unique();
             $table->string('nombre');
             $table->enum('categoria', ['Antibióticos', 'Analgésicos', 'Sueros', 'Material Quirúrgico', 'Vitaminas']);
             $table->decimal('precio', 10, 2);

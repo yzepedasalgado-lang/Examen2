@@ -12,7 +12,8 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        //
+        $proveedores = Proveedor::latest()->paginate(10);
+        return view('proveedores.index', compact('proveedores'));
     }
 
     /**
@@ -20,7 +21,7 @@ class ProveedorController extends Controller
      */
     public function create()
     {
-        //
+        return view('proveedores.create');
     }
 
     /**
@@ -28,7 +29,22 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'rtn'            => 'required|digits:14|unique:proveedores,rtn',
+            'empresa'        => 'required|max:255',
+            'contacto'       => 'required|max:255',
+            'telefono'       => ['required', 'regex:/^[238][0-9]{7}$/'],
+            'categoria'      => 'required|in:Fármacos,Material Quirúrgico,Equipos',
+            'limite_credito' => 'required|numeric|min:0',
+            'dias_credito'   => 'required|in:15,30,45,60',
+            'estado'         => 'required|in:Activo,Inactivo',
+            'fecha_registro' => 'required|date',
+        ]);
+
+        Proveedor::create($request->all());
+
+        return redirect()->route('proveedores.index')
+                         ->with('success', '¡Proveedor registrado exitosamente!');
     }
 
     /**
@@ -36,7 +52,7 @@ class ProveedorController extends Controller
      */
     public function show(Proveedor $proveedor)
     {
-        //
+
     }
 
     /**
@@ -44,7 +60,7 @@ class ProveedorController extends Controller
      */
     public function edit(Proveedor $proveedor)
     {
-        //
+        return view('proveedores.edit', compact('proveedor'));
     }
 
     /**
@@ -52,7 +68,22 @@ class ProveedorController extends Controller
      */
     public function update(Request $request, Proveedor $proveedor)
     {
-        //
+        $request->validate([
+            'rtn'            => 'required|digits:14|unique:proveedores,rtn,' . $proveedor->id,
+            'empresa'        => 'required|max:255',
+            'contacto'       => 'required|max:255',
+            'telefono'       => ['required', 'regex:/^[238][0-9]{7}$/'],
+            'categoria'      => 'required|in:Fármacos,Material Quirúrgico,Equipos',
+            'limite_credito' => 'required|numeric|min:0',
+            'dias_credito'   => 'required|in:15,30,45,60',
+            'estado'         => 'required|in:Activo,Inactivo',
+            'fecha_registro' => 'required|date',
+        ]);
+
+        $proveedor->update($request->all());
+
+        return redirect()->route('proveedores.index')
+                         ->with('success', '¡Proveedor actualizado correctamente!');
     }
 
     /**
@@ -60,6 +91,9 @@ class ProveedorController extends Controller
      */
     public function destroy(Proveedor $proveedor)
     {
-        //
+        $proveedor->delete();
+
+        return redirect()->route('proveedores.index')
+                         ->with('success', '¡Proveedor eliminado correctamente!');
     }
 }

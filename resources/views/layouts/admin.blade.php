@@ -64,14 +64,13 @@
           </div>
 
           <div class="py-3">
-            <div class="text-white-50 small px-3 mb-2">MENÚ PRINCIPAL</div>
             <a class="nav-link px-4 py-3 {{ request()->routeIs('dashboard') ? 'text-white fw-bold' : 'text-white-50' }}"
               style="{{ request()->routeIs('dashboard') ? 'background-color: #2a9bb0; border-left: 4px solid #5bb8d9;' : '' }}"
               href="{{ route('dashboard') }}">
               <i class="fas fa-home fa-fw me-2"></i> Dashboard
             </a>
 
-            <div class="text-white-50 small px-3 mt-4 mb-2">GESTIÓN</div>
+
             <a class="nav-link px-4 py-3 {{ request()->is('medicamentos*') ? 'text-white fw-bold' : 'text-white-50' }}"
               style="{{ request()->is('medicamentos*') ? 'background-color: #2a9bb0; border-left: 4px solid #5bb8d9;' : '' }}"
               href="{{ url('/medicamentos') }}">
@@ -83,7 +82,7 @@
               <i class="fas fa-truck fa-fw me-2"></i> Proveedores
             </a>
 
-            <div class="text-white-50 small px-3 mt-4 mb-2">PERSONAL</div>
+            
             <a class="nav-link px-4 py-3 {{ request()->is('empleados*') ? 'text-white fw-bold' : 'text-white-50' }}"
               style="{{ request()->is('empleados*') ? 'background-color: #2a9bb0; border-left: 4px solid #5bb8d9;' : '' }}"
               href="{{ url('/empleados') }}">
