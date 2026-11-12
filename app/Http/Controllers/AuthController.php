@@ -1,75 +1,43 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\Empleado;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
-class EmpleadoController extends Controller
+class AuthController extends Controller
 {
-    public function index()
+    public function showLogin()
     {
-        $empleados = Empleado::orderBy('apellido')->paginate(10);
-        return view('empleados.index', compact('empleados'));
+        return view('auth.login');
     }
 
-    public function create()
+    public function login(Request $request)
     {
-        return view('empleados.create');
-    }
-
-    public function store(Request $request)
-    {
-        $datos = $request->validate([
-            'identidad'       => 'required|digits:13|unique:empleados,identidad',
-            'nombre'          => 'required|string|max:255',
-            'apellido'        => 'required|string|max:255',
-            'cargo'           => 'required|string|max:255',
-            'salario'         => 'required|numeric|min:0',
-            'codigo_empleado' => 'required|digits:13|unique:empleados,codigo_empleado',
-            'fecha_ingreso'   => 'required|date',
+        $credentials = $request->validate([
+            'email' => ['required', 'email', 'ends_with:@disfarma.hn'],
+            'password' => ['required'],
+        ], [
+            'email.required' => 'El correo es obligatorio.',
+            'email.email' => 'Ingrese un correo válido.',
+            'email.ends_with' => 'Debe usar su correo institucional @disfarma.hn.',
+            'password.required' => 'La contraseña es obligatoria.',
         ]);
 
-        Empleado::create($datos);
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            $request->session()->regenerate(); // anti fijación de sesión
+            return redirect()->intended(route('dashboard'));
+        }
 
-        return redirect()->route('empleados.index')
-            ->with('success', 'Empleado registrado correctamente.');
+        return back()->withErrors([
+            'email' => 'Las credenciales no coinciden con nuestros registros.',
+        ])->onlyInput('email');
     }
 
-    public function show(Empleado $empleado)
+    public function logout(Request $request)
     {
-        return view('empleados.show', compact('empleado'));
-    }
-
-    public function edit(Empleado $empleado)
-    {
-        return view('empleados.edit', compact('empleado'));
-    }
-
-    public function update(Request $request, Empleado $empleado)
-    {
-        $datos = $request->validate([
-            'identidad'       => ['required', 'digits:13', Rule::unique('empleados', 'identidad')->ignore($empleado->id)],
-            'nombre'          => 'required|string|max:255',
-            'apellido'        => 'required|string|max:255',
-            'cargo'           => 'required|string|max:255',
-            'salario'         => 'required|numeric|min:0',
-            'codigo_empleado' => ['required', 'digits:13', Rule::unique('empleados', 'codigo_empleado')->ignore($empleado->id)],
-            'fecha_ingreso'   => 'required|date',
-        ]);
-
-        $empleado->update($datos);
-
-        return redirect()->route('empleados.index')
-            ->with('success', 'Empleado actualizado correctamente.');
-    }
-
-    public function destroy(Empleado $empleado)
-    {
-        $empleado->delete();
-
-        return redirect()->route('empleados.index')
-            ->with('success', 'Empleado dado de baja correctamente.');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
 }
