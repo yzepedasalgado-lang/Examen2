@@ -82,7 +82,7 @@
               <i class="fas fa-truck fa-fw me-2"></i> Proveedores
             </a>
 
-            
+
             <a class="nav-link px-4 py-3 {{ request()->is('empleados*') ? 'text-white fw-bold' : 'text-white-50' }}"
               style="{{ request()->is('empleados*') ? 'background-color: #2a9bb0; border-left: 4px solid #5bb8d9;' : '' }}"
               href="{{ url('/empleados') }}">
@@ -116,14 +116,43 @@
   <!-- Pie de página institucional-->
   <footer class="py-4 mt-auto" style="background-color: #14606e;">
     <div class="container-fluid px-4">
-      <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-        <div class="col-auto">
-          <div class="small m-0 text-white">Copyright &copy; DISFARMA {{ date('Y') }}. Sistema de Gestión Farmacéutica.
-          </div>
+      <div class="row text-white">
+        <div class="col-md-3 mb-3">
+          <h6 class="fw-bold" style="color: #5bb8d9;">DISFARMA Honduras</h6>
+          <p class="small mb-0">
+            Droguería y Distribuidora Farmacéutica San Rafael. Más de 18 años como proveedora mayorista
+            de medicamentos, insumos médico-quirúrgicos y material hospitalario.
+          </p>
         </div>
-        <div class="col-auto">
-          <div class="small m-0 text-white">Todos los derechos reservados.</div>
+
+        <div class="col-md-3 mb-3">
+          <h6 class="fw-bold" style="color: #5bb8d9;">Ubicaciones</h6>
+          <p class="small mb-1">
+            <i class="fas fa-location-dot me-1"></i>
+            <strong>Tegucigalpa:</strong> Centro de distribución, Bulevar Suyapa
+          </p>
+          <p class="small mb-0">
+            <i class="fas fa-location-dot me-1"></i>
+            <strong>San Pedro Sula:</strong> Centro logístico, Bulevar del Norte
+          </p>
         </div>
+
+        <div class="col-md-3 mb-3">
+          <h6 class="fw-bold" style="color: #5bb8d9;">Redes Sociales</h6>
+          <a href="https://www.facebook.com" class="text-white me-3 fs-4"><i class="fab fa-facebook"></i></a>
+          <a href="https://www.https://www.instagram.com" class="text-white me-3 fs-4"><i class="fab fa-instagram"></i></a>
+        </div>
+
+        <div class="col-md-3 mb-3">
+          <h6 class="fw-bold" style="color: #5bb8d9;">Contexto Académico UNAH</h6>
+          <div class="small fw-bold">Programación Web</div>
+          <div class="small">Examen II - Unidad II</div>
+        </div>
+      </div>
+
+      <hr class="border-light">
+      <div class="text-center small text-white">
+        &copy; {{ date('Y') }} DISFARMA Honduras. Todos los derechos reservados.
       </div>
     </div>
   </footer>
